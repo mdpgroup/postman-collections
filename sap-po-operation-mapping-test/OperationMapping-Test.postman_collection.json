@@ -1,0 +1,99 @@
+{
+	"info": {
+		"_postman_id": "5dcd2025-cd23-4d7f-af06-c521857b4e42",
+		"name": "OperationMapping-Test",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "OperationMappingTest",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "e1eab1de-6c5d-468b-b18d-94cc267aef6b",
+						"exec": [
+							"var input = pm.environment.get(\"Input\");\r",
+							"input = input.replace(/&/g,\"&amp;\").replace(/</g,\"&lt;\").replace(/>/g,\"&gt;\").replace(/\"/g,\"&quot;\");\r",
+							"console.log(input);\r",
+							"pm.environment.set(\"Input_temp\", input);"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"id": "a0a6d98f-0d5b-471c-8799-51624433965e",
+						"exec": [
+							"var responseJson = xml2Json(responseBody);\r",
+							"var masterString = responseJson[\"instance\"][\"attribute\"][5][\"value\"][\"instance\"][\"attribute\"][1][\"value\"][\"_\"];\r",
+							"masterString = masterString.replace(/(\\r\\n|\\n|\\r)/gm, \"\");\r",
+							"resultString = masterString.match(/<!\\[CDATA\\[.*?\\]\\]>/g);\r",
+							"resultString = resultString[0].replace(\"<![CDATA[\",\"\").replace(\"]]\",\"\");\r",
+							"console.log(resultString);\r",
+							"\r",
+							"tests[resultString] = true;  "
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "basic",
+					"basic": [
+						{
+							"key": "password",
+							"value": "test",
+							"type": "string"
+						},
+						{
+							"key": "username",
+							"value": "test",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"type": "text",
+						"value": "text/xml; charset=UTF-8"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\r\n<instance typeid=\"com.sap.aii.util.hmi.core.msg.HmiRequest\"><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ClientId\"><value index=\"0\" isnull=\"false\">4054f934fcd811eab42d54f36eecaf14</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ClientLanguage\"><value index=\"0\" isnull=\"false\">TR</value></attribute><attribute isleave=\"false\" name=\"ClientLevel\"><value index=\"0\" isnull=\"false\"><instance typeid=\"com.sap.aii.util.applcomp.ApplCompLevel\"><attribute isleave=\"true\" leave_typeid=\"string\" name=\"Release\"><value index=\"0\" isnull=\"false\">7.31</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"SupportPackage\"><value index=\"0\" isnull=\"false\">*</value></attribute></instance></value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ClientPassword\"><value index=\"0\" isnull=\"false\">dummy</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ClientUser\"><value index=\"0\" isnull=\"false\">dummy</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ControlFlag\"><value index=\"0\" isnull=\"false\">0</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"HmiSpecVersion\"><value index=\"0\" isnull=\"false\">1.0</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"MethodId\"><value index=\"0\" isnull=\"false\">executeoperationmappingmethod</value></attribute><attribute isleave=\"false\" name=\"MethodInput\"><value index=\"0\" isnull=\"false\"><instance typeid=\"com.sap.aii.util.hmi.api.HmiMethodInput\"><attribute isleave=\"false\" name=\"Parameters\"><value index=\"0\" isnull=\"false\"><instance typeid=\"com.sap.aii.util.hmi.core.gdi2.EntryStringString\"><attribute isleave=\"true\" leave_typeid=\"string\" name=\"Key\"><value index=\"0\" isnull=\"false\">body</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"Value\"><value index=\"0\" isnull=\"false\">&lt;testExecutionRequest&gt;\r\n &lt;ref&gt;\r\n  &lt;vc swcGuid=&quot;{{SWCVId}}&quot; vcType=&quot;S&quot;/&gt;\r\n  &lt;key typeID=&quot;MAPPING&quot;&gt;\r\n   &lt;elem&gt;{{OperationMappingName}}&lt;/elem&gt;\r\n   &lt;elem&gt;{{OperationMappingNamespace}}&lt;/elem&gt;\r\n  &lt;/key&gt;\r\n &lt;/ref&gt;\r\n &lt;testData&gt;\r\n  &lt;inputXml&gt;&lt;![CDATA[{{Input_temp}}]]&gt;&lt;/inputXml&gt;\r\n  &lt;parameters&gt;\r\n   &lt;testParameterInfo&gt;\r\n    &lt;HeaderParameters&gt;\r\n     &lt;properties&gt;\r\n      &lt;property name=&quot;TimeSent&quot;/&gt;\r\n      &lt;property name=&quot;SenderSystem&quot;&gt;&lt;![CDATA[Test_SenderSystem]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;SenderParty&quot;&gt;&lt;![CDATA[Test_SenderParty]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;InterfaceNamespace&quot;/&gt;\r\n      &lt;property name=&quot;Interface&quot;/&gt;\r\n      &lt;property name=&quot;SenderPartyScheme&quot;/&gt;\r\n      &lt;property name=&quot;ReceiverPartyAgency&quot;/&gt;\r\n      &lt;property name=&quot;RefToMessageId&quot;/&gt;\r\n      &lt;property name=&quot;ReceiverPartyScheme&quot;/&gt;\r\n      &lt;property name=&quot;SenderName&quot;/&gt;\r\n      &lt;property name=&quot;Profiling&quot;&gt;&lt;![CDATA[off]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;MessageId&quot;/&gt;\r\n      &lt;property name=&quot;VersionMajor&quot;/&gt;\r\n      &lt;property name=&quot;ReceiverName&quot;/&gt;\r\n      &lt;property name=&quot;ReceiverParty&quot;&gt;&lt;![CDATA[Test_ReceiverParty]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;ProcessingMode&quot;/&gt;\r\n      &lt;property name=&quot;SenderService&quot;&gt;&lt;![CDATA[Test_SenderService]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;ReceiverNamespace&quot;/&gt;\r\n      &lt;property name=&quot;ConversationId&quot;/&gt;\r\n      &lt;property name=&quot;VersionMinor&quot;/&gt;\r\n      &lt;property name=&quot;SenderNamespace&quot;/&gt;\r\n      &lt;property name=&quot;ReceiverService&quot;&gt;&lt;![CDATA[Test_ReceiverService]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;ReceiverSystem&quot;&gt;&lt;![CDATA[Test_ReceiverSystem]]&gt;&lt;/property&gt;\r\n      &lt;property name=&quot;SenderPartyAgency&quot;/&gt;\r\n     &lt;/properties&gt;\r\n    &lt;/HeaderParameters&gt;\r\n    &lt;ImportingParameters&gt;\r\n     &lt;properties/&gt;\r\n    &lt;/ImportingParameters&gt;\r\n   &lt;/testParameterInfo&gt;\r\n  &lt;/parameters&gt;\r\n  &lt;testParameters&gt;\r\n   &lt;direction&gt;{{Direction}}&lt;/direction&gt;\r\n   &lt;fromStep&gt;0&lt;/fromStep&gt;\r\n   &lt;toStep&gt;0&lt;/toStep&gt;\r\n  &lt;/testParameters&gt;\r\n  &lt;traceLevel&gt;3&lt;/traceLevel&gt;\r\n &lt;/testData&gt;\r\n&lt;/testExecutionRequest&gt;</value></attribute></instance></value></attribute></instance></value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"RequestId\"><value index=\"0\" isnull=\"false\">4054f935fcd811ea840654f36eecaf14</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"RequiresSession\"><value index=\"0\" isnull=\"false\">false</value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ServerApplicationId\"><value index=\"0\" isnull=\"true\"></value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ServerLogicalSystemName\"><value index=\"0\" isnull=\"true\"></value></attribute><attribute isleave=\"true\" leave_typeid=\"string\" name=\"ServiceId\"><value index=\"0\" isnull=\"false\">mappingtestservice</value></attribute></instance>",
+					"options": {
+						"raw": {
+							"language": "xml"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://host:port/rep/mappingtestservice/int?container=any",
+					"protocol": "http",
+					"host": [
+						"host"
+					],
+					"port": "port",
+					"path": [
+						"rep",
+						"mappingtestservice",
+						"int"
+					],
+					"query": [
+						{
+							"key": "container",
+							"value": "any"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
